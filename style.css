@@ -1,0 +1,95 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+
+.ios-calculator {
+    width: 90%;
+    max-width: 400px;
+    margin: 40px auto;
+    background-color: #000;
+}
+
+
+.result {
+    height: 60px;
+    padding-inline: 8px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+
+    color: #FFF;
+    font-family: monospace, sans-serif;
+    font-size: 20px;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(4, 24.5%);
+    justify-content: space-between;
+    margin-bottom: 0.5%;
+}
+
+.row:first-child {
+    grid-template-areas:
+        "clear clear back division"
+}
+.clear {
+    grid-area: clear;
+    text-transform: uppercase;
+}
+.back {
+    grid-area: back;
+}
+.division {
+    grid-area: division;
+}
+
+.row:last-child {
+    grid-template-areas:
+        "zero zero zero equal"
+}
+.zero {
+    grid-area: zero;
+}
+.equal {
+    grid-area: equal;
+}
+
+.controls button {
+    height: 60px;
+    background-color: #d8d9db;
+
+    font-weight: 700;
+    font-size: 28px;
+}
+.controls button:hover {
+    background-color: #ebebeb;
+}
+.controls button:active {
+    background-color: #bbbcbe;
+}
+.controls button:last-child {
+    background-color: #df974c;
+    color: #FFF;
+}
+.controls button:last-child:hover {
+    background-color: #dfb07e;
+}
+.controls button:last-child:active {
+    background-color: #dd8d37;
+}
+
+
+
