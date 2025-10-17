@@ -4,13 +4,22 @@ const controlsDiv = document.querySelector(".controls");
 let operatorKey = null;
 let operands = [];
 
-let states = [{resultScreen: '0', operandA: null, operandB: null, operatorKey: null}]
+let history = [{resultScreen: '0', operandA: null, operandB: null, operatorKey: null}]
 
 const operations =  {
     'plus': (a,b) => a + b,
     'minus': (a,b) => a - b,
     'division': (a,b) => a / b,
     'multiplication': (a,b) => a * b,
+}
+
+function updateHistory (state) {
+    const latestHistoryState = history[history.length - 1];
+    history = [...latestHistoryState, ...state]
+}
+
+function resetHistory () {
+    history = [{resultScreen: '0', operandA: null, operandB: null, operatorKey: null}]
 }
 
 function updateResultScreen (val) {
@@ -21,7 +30,7 @@ function handleClearClick () {
     updateResultScreen(0)
     operatorKey = null;
     operands = [];
-    states = [{resultScreen: '0', operandA: null, operandB: null, operatorKey: null}]
+    resetHistory()
 }
 
 function handleOperatorClick(operator) {
@@ -31,9 +40,7 @@ function handleOperatorClick(operator) {
     if (!operatorKey) {
         operatorKey = operator;
         updateResultScreen('0')
-
-        const lastState = states[states.length - 1]
-        states.push({...lastState, operatorKey: operator, resultScreen: '0'})
+        updateHistory({operatorKey: operator, resultScreen: '0'})
     }
 }
 
@@ -41,16 +48,12 @@ function handleNumberClick (number) {
     if (!operatorKey) {
         operands[0] = (operands[0] ?? '') + number;
         updateResultScreen(operands[0])
-
-        const lastState = states[states.length - 1]
-        states.push({...lastState, operandA: operands[0], resultScreen: operands[0]})
+        updateHistory({operandA: operands[0], resultScreen: operands[0]})
     }
     else {
         operands[1] = (operands[1] ?? '') + number;
         updateResultScreen(operands[1])
-
-        const lastState = states[states.length - 1]
-        states.push({...lastState, operandB: operands[1], resultScreen: operands[1]})
+        updateHistory({operandB: operands[1], resultScreen: operands[1]})
     }
 }
 
@@ -62,23 +65,21 @@ function handleEqualClick () {
     const operandB = +operands[1] ?? 0;
     const res = operations[operatorKey](operandA,operandB)
     updateResultScreen(res)
-
-    const lastState = states[states.length - 1];
-    states.push({...lastState, resultScreen: res})
+    updateHistory({resultScreen: res})
 }
 
 function handleBackClick () {
-    if (states.length <= 1) {
+    if (history.length <= 1) {
         return;
     }
-    states.pop();
+    history.pop();
 
-    const lastState = states[states.length - 1];
+    const stateToTravel = history[history.length - 1];
 
-    operands[0] = lastState.operandA;
-    operands[1] = lastState.operandB;
-    updateResultScreen(lastState.resultScreen);
-    operatorKey = lastState.operatorKey;
+    operands[0] = stateToTravel.operandA;
+    operands[1] = stateToTravel.operandB;
+    updateResultScreen(stateToTravel.resultScreen);
+    operatorKey = stateToTravel.operatorKey;
 }
 
 function handleControlsDivClick (e) {
