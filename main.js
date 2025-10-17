@@ -15,7 +15,7 @@ const operations =  {
 
 function updateHistory (state) {
     const latestHistoryState = history[history.length - 1];
-    history = [...latestHistoryState, ...state]
+    history = [...history, {...latestHistoryState, ...state}]
 }
 
 function resetHistory () {
@@ -92,16 +92,10 @@ function handleControlsDivClick (e) {
             handleClearClick()
             break;
         case "plus":
-            handleOperatorClick('plus')
-            break;
         case "minus":
-            handleOperatorClick('minus')
-            break;
         case "division":
-            handleOperatorClick('division')
-            break;
         case "multiplication":
-            handleOperatorClick('multiplication')
+            handleOperatorClick(btnId)
             break;
         case 'equal':
             handleEqualClick()
